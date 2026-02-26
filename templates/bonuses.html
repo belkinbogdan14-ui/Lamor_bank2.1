@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Бонусы - Lamor Bank</title>
+    <style>
+        body { margin: 0; display: flex; font-family: 'Segoe UI', sans-serif; background: #0a0a0a; color: white; }
+        .sidebar { width: 260px; background: #111111; height: 100vh; position: fixed; display: flex; flex-direction: column; border-right: 1px solid #1f1f1f; }
+        .sidebar .logo { padding: 40px 25px; font-size: 22px; font-weight: 800; color: #ffffff; text-transform: uppercase; border-bottom: 1px solid #1f1f1f; }
+        .sidebar ul li a { display: block; padding: 18px 25px; color: #999; text-decoration: none; }
+        .main-content { margin-left: 260px; padding: 50px; width: 100%; }
+        
+        .bonus-display { background: linear-gradient(135deg, #111 0%, #1a1a1a 100%); padding: 50px; border-radius: 15px; border: 1px solid #222; text-align: center; }
+        .bonus-title { color: #888; text-transform: uppercase; letter-spacing: 2px; font-size: 14px; margin-bottom: 20px; }
+        .bonus-amount { font-size: 64px; font-weight: 800; color: #ffcc00; }
+
+/* Основной контейнер, в котором лежит весь контент (main-content) */
+.main-content {
+    opacity: 0; /* Изначально скрыт */
+    transform: translateY(20px); /* Немного опущен вниз */
+    animation: pageLoad 0.5s ease-out forwards; /* Запуск анимации */
+}
+
+/* Описание самой анимации */
+@keyframes pageLoad {
+    to {
+        opacity: 1; /* Становится видимым */
+        transform: translateY(0); /* Возвращается на место */
+    }
+}
+    </style>
+</head>
+<body>
+ <div class="sidebar" style="width:260px; background:#050505; height:100vh; border-right:1px solid #1a1a1a; position:fixed; display:flex; flex-direction:column; margin:0; padding:0;">
+    <div style="padding:30px; font-weight:900; color:#2ecc71; font-size:22px; height:22px; line-height:22px;">LAMOR BANK</div>
+    
+    <ul style="list-style:none; padding:0; margin:0;">
+        <li style="height:50px;"><a href="{{ url_for('home') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Главная</a></li>
+        <li style="height:50px;"><a href="{{ url_for('accounts') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Счета</a></li>
+        <li style="height:50px;"><a href="{{ url_for('payments') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Платежи</a></li>
+        <li style="height:50px;"><a href="{{ url_for('transfers') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Переводы</a></li>
+        <li style="height:50px;"><a href="{{ url_for('bonuses') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Бонусы</a></li>
+        <li style="height:50px;"><a href="{{ url_for('analytics') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Аналитика</a></li>
+        
+        {% if is_admin %}
+        <li style="height:50px;"><a href="{{ url_for('admin') }}" style="display:block; padding:15px 30px; color:#f1c40f; text-decoration:none; line-height:20px;">Админ-панель</a></li>
+        {% endif %}
+    </ul>
+
+    <div style="margin-top:auto; padding-bottom:20px;">
+        <a href="{{ url_for('logout') }}" style="display:block; padding:15px 30px; color:#e74c3c; text-decoration:none; font-weight:bold;">Выход</a>
+    </div>
+</div>
+
+    <div class="main-content">
+        <h1 style="margin-bottom: 40px;">Программа лояльности</h1>
+        <div class="bonus-display">
+            <div class="bonus-title">Доступные баллы Lamor</div>
+            <div class="bonus-amount">{{ balance }} Бр</div>
+            <p style="color: #444; margin-top: 30px; font-size: 14px;">Баллы начисляются автоматически за каждую операцию в системе.</p>
+        </div>
+    </div>
+</body>
+</html>

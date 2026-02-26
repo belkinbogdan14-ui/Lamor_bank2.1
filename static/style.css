@@ -1,0 +1,116 @@
+/* style.css */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    display: flex;
+    background-color: #f0f2f5; 
+    color: #333;
+}
+
+/* --- САЙДБАР --- */
+.sidebar {
+    width: 250px;
+    background-color: #212121; /* Темный фон сайдбара */
+    color: #ffffff;
+    padding: 20px 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.sidebar li {
+    padding: 15px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+.sidebar li i {
+    margin-right: 10px;
+}
+.sidebar li.active {
+    background-color: #3b3b3b; 
+    border-left: 4px solid #007bff; 
+    font-weight: bold;
+}
+.sidebar li:hover:not(.active) {
+    background-color: #2e2e2e;
+}
+.logout {
+    padding: 15px 20px;
+    color: #ff4d4d; 
+    cursor: pointer;
+    border-top: 1px solid #3b3b3b;
+    text-decoration: none; /* Убрать подчеркивание для ссылки */
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+}
+.logout i {
+    margin-right: 10px;
+}
+
+/* --- ОСНОВНОЙ КОНТЕНТ --- */
+.main-content {
+    flex-grow: 1;
+    padding: 30px;
+    background-color: #f0f2f5;
+}
+.greeting {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* --- БЛОК БАЛАНСА И КНОПОК --- */
+.content-box {
+    background-color: #2e2e2e; 
+    padding: 25px;
+    border-radius: 8px;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+}
+.balance-label {
+    font-size: 16px;
+    opacity: 0.7;
+    margin-bottom: 5px;
+}
+.balance {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+.quick-actions button {
+    background-color: #007bff; /* Синий цвет для главной кнопки (Перевод) */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+.quick-actions button:hover {
+    background-color: #0056b3;
+}
+.quick-actions button:nth-child(2),
+.quick-actions button:nth-child(3) {
+    background-color: #4a4a4a; /* Более темные кнопки (Оплата, Пополнение) */
+}
+.quick-actions button:nth-child(2):hover,
+.quick-actions button:nth-child(3):hover {
+    background-color: #5f5f5f;
+}
+
+/* Иконки Font Awesome (используются в HTML) */
+/* В реальном проекте нужен внешний файл */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');

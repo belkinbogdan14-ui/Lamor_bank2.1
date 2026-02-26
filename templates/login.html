@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Lamor Bank - Вход</title>
+    <style>
+        body { background: #0a0a0a; color: white; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .auth-card { background: #111; padding: 40px; border-radius: 12px; width: 350px; border: 1px solid #222; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .logo-text { text-align: center; font-size: 24px; font-weight: 800; margin-bottom: 30px; letter-spacing: 1px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 6px; box-sizing: border-box; outline: none; }
+        input:focus { border-color: #007bff; }
+        button { width: 100%; padding: 12px; background: #007bff; border: none; color: white; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        button:hover { background: #0056b3; }
+        .link { display: block; text-align: center; margin-top: 20px; color: #888; text-decoration: none; font-size: 14px; }
+        .link:hover { color: #fff; }
+        .error { color: #ff4444; text-align: center; font-size: 14px; background: rgba(255,68,68,0.1); padding: 10px; border-radius: 4px; }
+
+/* Основной контейнер, в котором лежит весь контент (main-content) */
+.main-content {
+    opacity: 0; /* Изначально скрыт */
+    transform: translateY(20px); /* Немного опущен вниз */
+    animation: pageLoad 0.5s ease-out forwards; /* Запуск анимации */
+}
+
+/* Описание самой анимации */
+@keyframes pageLoad {
+    to {
+        opacity: 1; /* Становится видимым */
+        transform: translateY(0); /* Возвращается на место */
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <div class="logo-text">LAMOR BANK</div>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}{% for m in messages %}<p class="error">{{ m }}</p>{% endfor %}{% endif %}
+        {% endwith %}
+        <form method="POST">
+            <input type="text" name="login_id" placeholder="ID пользователя" required>
+            <input type="password" name="password" placeholder="Пароль" required>
+            <button type="submit">Войти в систему</button>
+        </form>
+        <a href="{{ url_for('register') }}" class="link">Нет аккаунта? Зарегистрироваться</a>
+    </div>
+</body>
+</html>

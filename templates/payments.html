@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Маркетплейс - LAMOR BANK</title>
+</head>
+<body style="margin:0; background:#000; color:#fff; font-family:sans-serif; display:flex;">
+
+    <div class="sidebar" style="width:260px; background:#050505; height:100vh; border-right:1px solid #1a1a1a; position:fixed; display:flex; flex-direction:column; margin:0; padding:0;">
+        <div style="padding:30px; font-weight:900; color:#2ecc71; font-size:22px; height:22px; line-height:22px;">LAMOR BANK</div>
+        <ul style="list-style:none; padding:0; margin:0;">
+            <li style="height:50px;"><a href="{{ url_for('home') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Главная</a></li>
+            <li style="height:50px;"><a href="{{ url_for('accounts') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Счета</a></li>
+            <li style="height:50px;"><a href="{{ url_for('payments') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Маркетплейс</a></li>
+            <li style="height:50px;"><a href="{{ url_for('transfers') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Переводы</a></li>
+            <li style="height:50px;"><a href="{{ url_for('bonuses') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Бонусы</a></li>
+            <li style="height:50px;"><a href="{{ url_for('analytics') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Аналитика</a></li>
+            {% if is_admin %}
+            <li style="height:50px;"><a href="{{ url_for('admin') }}" style="display:block; padding:15px 30px; color:#f1c40f; text-decoration:none; line-height:20px;">Админ-панель</a></li>
+            {% endif %}
+        </ul>
+        <div style="margin-top:auto; padding-bottom:20px;">
+            <a href="{{ url_for('logout') }}" style="display:block; padding:15px 30px; color:#e74c3c; text-decoration:none; font-weight:bold;">Выход</a>
+        </div>
+    </div>
+
+    <div style="margin-left:260px; padding:40px; width:calc(100% - 260px);">
+        <h1 style="margin-top:0;">Маркетплейс</h1>
+        <p style="color:#666;">Ваш баланс: <span style="color:#2ecc71; font-weight:bold;">{{ balance }} ГМР</span></p>
+
+        <div style="background:#0a0a0a; border:1px solid #1a1a1a; padding:25px; border-radius:15px; margin-bottom:40px;">
+            <h3 style="margin-top:0; color:#2ecc71;">Выставить товар на продажу</h3>
+            <form method="POST" style="display:flex; flex-wrap:wrap; gap:15px;">
+                <input type="hidden" name="action" value="sell">
+                <input type="text" name="title" placeholder="Название предмета" required style="flex:2; background:#000; color:#fff; border:1px solid #333; padding:12px; border-radius:5px;">
+                <input type="number" name="price" placeholder="Цена" required style="width:100px; background:#000; color:#fff; border:1px solid #333; padding:12px; border-radius:5px;">
+                <input type="text" name="contact" placeholder="Ваш Discord / TG" required style="flex:1; background:#000; color:#fff; border:1px solid #333; padding:12px; border-radius:5px;">
+                <button type="submit" style="background:#2ecc71; color:#000; border:none; padding:12px 25px; font-weight:bold; cursor:pointer; border-radius:5px;">Выставить</button>
+            </form>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:25px;">
+            {% for p in products %}
+            <div style="background:#0a0a0a; border:1px solid #1a1a1a; padding:20px; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between;">
+                <div>
+                    <h3 style="margin:0 0 10px 0; color:#fff;">{{ p.title }}</h3>
+                    <div style="color:#2ecc71; font-size:26px; font-weight:bold; margin-bottom:10px;">{{ p.price }} ГМР</div>
+                    <p style="font-size:13px; color:#666; margin:5px 0;">Продавец: <span style="color:#bbb;">{{ p.seller }}</span></p>
+                    <p style="font-size:13px; color:#666; margin:5px 0;">Связь: <span style="color:#bbb;">{{ p.contact }}</span></p>
+                </div>
+                
+                <form method="POST" style="margin-top:20px;">
+                    <input type="hidden" name="action" value="buy">
+                    <input type="hidden" name="product_id" value="{{ p.id }}">
+                    <button type="submit" style="width:100%; padding:12px; background:#fff; color:#000; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">
+                        Купить предмет
+                    </button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

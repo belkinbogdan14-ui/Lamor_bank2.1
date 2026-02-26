@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная | LAMOR BANK</title>
+    <style>
+        body { margin: 0; background: #000; color: #fff; font-family: sans-serif; display: flex; }
+        .sidebar { width: 260px; background: #050505; height: 100vh; border-right: 1px solid #1a1a1a; position: fixed; }
+        .sidebar-brand { padding: 30px; font-size: 22px; font-weight: 900; color: #2ecc71; text-align: center; }
+        .nav-link { display: block; padding: 15px 30px; color: #666; text-decoration: none; border-left: 3px solid transparent; transition: 0.3s; }
+        .nav-link:hover { background: #0a0a0a; color: #fff; border-left-color: #2ecc71; }
+        .nav-link.active { color: #fff; border-left-color: #2ecc71; background: #0a0a0a; }
+        .main { margin-left: 260px; padding: 40px; width: 100%; }
+        .card { background: #0a0a0a; border: 1px solid #1a1a1a; padding: 25px; border-radius: 15px; margin-bottom: 20px; }
+        .accent { color: #2ecc71; }
+    </style>
+</head>
+<body>
+<div class="sidebar" style="width:260px; background:#050505; height:100vh; border-right:1px solid #1a1a1a; position:fixed; display:flex; flex-direction:column; margin:0; padding:0;">
+    <div style="padding:30px; font-weight:900; color:#2ecc71; font-size:22px; height:22px; line-height:22px;">LAMOR BANK</div>
+    
+    <ul style="list-style:none; padding:0; margin:0;">
+        <li style="height:50px;"><a href="{{ url_for('home') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Главная</a></li>
+        <li style="height:50px;"><a href="{{ url_for('accounts') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Счета</a></li>
+        <li style="height:50px;"><a href="{{ url_for('payments') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Платежи</a></li>
+        <li style="height:50px;"><a href="{{ url_for('transfers') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Переводы</a></li>
+        <li style="height:50px;"><a href="{{ url_for('bonuses') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Бонусы</a></li>
+        <li style="height:50px;"><a href="{{ url_for('analytics') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Аналитика</a></li>
+        
+        {% if is_admin %}
+        <li style="height:50px;"><a href="{{ url_for('admin') }}" style="display:block; padding:15px 30px; color:#f1c40f; text-decoration:none; line-height:20px;">Админ-панель</a></li>
+        {% endif %}
+    </ul>
+
+    <div style="margin-top:auto; padding-bottom:20px;">
+        <a href="{{ url_for('logout') }}" style="display:block; padding:15px 30px; color:#e74c3c; text-decoration:none; font-weight:bold;">Выход</a>
+    </div>
+</div>
+    <div class="main">
+        <h1>Добро пожаловать, <span class="accent">{{ user.name }}</span></h1>
+        <div class="card">
+            <p style="color: #666; margin: 0;">Ваш баланс:</p>
+            <h2 style="font-size: 48px; margin: 10px 0;">{{ balance }} <span class="accent">ГМР</span></h2>
+        </div>
+
+        <div class="card">
+            <h3 class="accent">Последние новости</h3>
+            {% for note in notifications %}
+                <div style="border-bottom: 1px solid #111; padding: 10px 0;">
+                    <small style="color: #444;">{{ note.date.strftime('%H:%M') }}</small>
+                    <p style="margin: 5px 0;">{{ note.message }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

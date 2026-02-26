@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Переводы - LAMOR BANK</title>
+</head>
+<body style="margin:0; background:#000; color:#fff; font-family:sans-serif; display:flex;">
+
+    <div class="sidebar" style="width:260px; background:#050505; height:100vh; border-right:1px solid #1a1a1a; position:fixed; display:flex; flex-direction:column; margin:0; padding:0;">
+        <div style="padding:30px; font-weight:900; color:#2ecc71; font-size:22px; height:22px; line-height:22px;">LAMOR BANK</div>
+        <ul style="list-style:none; padding:0; margin:0;">
+            <li style="height:50px;"><a href="{{ url_for('home') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Главная</a></li>
+            <li style="height:50px;"><a href="{{ url_for('accounts') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Счета</a></li>
+            <li style="height:50px;"><a href="{{ url_for('payments') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Маркетплейс</a></li>
+            <li style="height:50px;"><a href="{{ url_for('transfers') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Переводы</a></li>
+            <li style="height:50px;"><a href="{{ url_for('bonuses') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Бонусы</a></li>
+            <li style="height:50px;"><a href="{{ url_for('analytics') }}" style="display:block; padding:15px 30px; color:#fff; text-decoration:none; line-height:20px;">Аналитика</a></li>
+            {% if is_admin %}
+            <li style="height:50px;"><a href="{{ url_for('admin') }}" style="display:block; padding:15px 30px; color:#f1c40f; text-decoration:none; line-height:20px;">Админ-панель</a></li>
+            {% endif %}
+        </ul>
+        <div style="margin-top:auto; padding-bottom:20px;">
+            <a href="{{ url_for('logout') }}" style="display:block; padding:15px 30px; color:#e74c3c; text-decoration:none; font-weight:bold;">Выход</a>
+        </div>
+    </div>
+
+    <div style="margin-left:260px; padding:40px; width:calc(100% - 260px);">
+        <h1 style="margin-top:0;">Прямые переводы</h1>
+        
+        <div style="background:#0a0a0a; border:1px solid #1a1a1a; padding:35px; border-radius:15px; max-width:500px;">
+            <div style="margin-bottom:25px;">
+                <p style="color:#666; margin:0 0 5px 0;">Доступно для перевода:</p>
+                <h2 style="margin:0; color:#2ecc71;">{{ balance }} ГМР</h2>
+            </div>
+
+            <form method="POST">
+                <div style="margin-bottom:20px;">
+                    <label style="display:block; margin-bottom:10px; color:#aaa; font-size:14px;">Выберите получателя:</label>
+                    <select name="target_id" required style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:12px; border-radius:5px; font-size:16px;">
+                        <option value="" disabled selected>-- Выбрать из списка --</option>
+                        {% for u in users %}
+                        <option value="{{ u.id }}">{{ u.name }} (@{{ u.login_id }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div style="margin-bottom:25px;">
+                    <label style="display:block; margin-bottom:10px; color:#aaa; font-size:14px;">Сумма перевода:</label>
+                    <input type="number" name="amount" min="1" step="0.1" placeholder="0.00" required style="width:95%; background:#000; color:#fff; border:1px solid #333; padding:12px; border-radius:5px; font-size:16px;">
+                </div>
+
+                <button type="submit" style="width:100%; background:#2ecc71; color:#000; border:none; padding:15px; font-size:16px; font-weight:bold; cursor:pointer; border-radius:5px; transition: 0.2s;">
+                    Подтвердить перевод
+                </button>
+            </form>
+            
+            <p style="font-size:12px; color:#444; margin-top:20px; text-align:center;">
+                Внимание: отменить транзакцию после подтверждения невозможно.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

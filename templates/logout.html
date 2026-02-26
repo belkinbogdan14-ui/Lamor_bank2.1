@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { margin: 0; background: #000; color: #fff; font-family: sans-serif; display: flex; }
+        .sidebar { width: 260px; background: #050505; height: 100vh; border-right: 1px solid #1a1a1a; position: fixed; }
+        .sidebar-brand { padding: 30px; font-size: 22px; font-weight: 900; color: #2ecc71; text-align: center; }
+        .nav-link { display: block; padding: 15px 30px; color: #666; text-decoration: none; border-left: 3px solid transparent; }
+        .nav-link:hover { background: #0a0a0a; color: #fff; border-left-color: #2ecc71; }
+        .main { margin-left: 260px; padding: 40px; width: 100%; }
+        .accent { color: #2ecc71; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-brand">LAMOR BANK</div>
+        <a href="{{ url_for('home') }}" class="nav-link">Главная</a>
+        <a href="{{ url_for('accounts') }}" class="nav-link">Счета</a>
+        <a href="{{ url_for('payments') }}" class="nav-link">Маркетплейс</a>
+        <a href="{{ url_for('transfers') }}" class="nav-link">Переводы</a>
+        <a href="{{ url_for('analytics') }}" class="nav-link">Аналитика</a>
+        <a href="{{ url_for('bonuses') }}" class="nav-link">Бонусы</a>
+        {% if is_admin %}
+        <a href="{{ url_for('admin') }}" class="nav-link" style="color: #f1c40f;">Админ-панель</a>
+        {% endif %}
+        <a href="{{ url_for('logout') }}" class="nav-link" style="margin-top: 50px; color: #e74c3c;">Выйти</a>
+    </div>
+    <div class="main">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

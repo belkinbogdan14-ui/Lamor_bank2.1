@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Lamor Bank - Регистрация</title>
+    <style>
+        body { background: #0a0a0a; color: white; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .auth-card { background: #111; padding: 40px; border-radius: 12px; width: 380px; border: 1px solid #222; }
+        .logo-text { text-align: center; font-size: 24px; font-weight: 800; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 8px 0; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #28a745; border: none; color: white; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; }
+        .info-text { text-align: center; font-size: 12px; color: #666; margin-top: 15px; }
+        .error { color: #ff4444; text-align: center; font-size: 14px; background: rgba(255,68,68,0.1); padding: 10px; margin-bottom: 10px; }
+
+/* Основной контейнер, в котором лежит весь контент (main-content) */
+.main-content {
+    opacity: 0; /* Изначально скрыт */
+    transform: translateY(20px); /* Немного опущен вниз */
+    animation: pageLoad 0.5s ease-out forwards; /* Запуск анимации */
+}
+
+/* Описание самой анимации */
+@keyframes pageLoad {
+    to {
+        opacity: 1; /* Становится видимым */
+        transform: translateY(0); /* Возвращается на место */
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <div class="logo-text">РЕГИСТРАЦИЯ</div>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}{% for m in messages %}<p class="error">{{ m }}</p>{% endfor %}{% endif %}
+        {% endwith %}
+        <form method="POST">
+            <input type="text" name="name" placeholder="ФИО полностью" required>
+            <input type="text" name="login_id" placeholder="Желаемый ID" required>
+            <input type="password" name="password" placeholder="Пароль" required>
+            <input type="number" name="balance" placeholder="Начальный баланс (ГМР)" value="0">
+            <button type="submit">Открыть счет</button>
+        </form>
+        <div class="info-text">Лимит пополнения при регистрации составляет 1000 ГМР.</div>
+        <a href="{{ url_for('login') }}" style="display:block; text-align:center; color:#888; text-decoration:none; font-size:14px; margin-top:15px;">Вернуться к входу</a>
+    </div>
+</body>
+</html>
