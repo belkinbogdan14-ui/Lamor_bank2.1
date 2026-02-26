@@ -5,10 +5,11 @@ import os
 
 app = Flask(__name__)
 app.secret_key = "lamor_key_2026"
-app.config['SESSION_PERMANENT'] = True # Сессия сохраняется, пока не нажмешь Выход
+app.config['SESSION_PERMANENT'] = True 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'bank.db')
+# Изменили на bank_v3.db для сброса структуры на Render
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'bank_v3.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -37,7 +38,7 @@ class Product(db.Model):
 class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.String(500))
-    user_id = db.Column(db.Integer, nullable=True) # Если None - для всех, если ID - личное
+    user_id = db.Column(db.Integer, nullable=True) # None = для всех, ID = личное
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
 with app.app_context():
@@ -63,7 +64,7 @@ def home():
     u, acc = get_current_data()
     if not u: return redirect(url_for('login'))
     
-    # Показываем общие новости (user_id is None) И личные уведомления (u.id)
+    # Фильтр уведомлений: личные + глобальные
     notes = Notification.query.filter(
         (Notification.user_id == None) | (Notification.user_id == u.id)
     ).order_by(Notification.date.desc()).all()
@@ -75,6 +76,7 @@ def login():
     if request.method == 'POST':
         u = User.query.filter_by(login_id=request.form.get('login_id'), password=request.form.get('password')).first()
         if u:
+            session.clear()
             session['user_id'] = u.id
             return redirect(url_for('home'))
     return render_template('login.html')
@@ -88,8 +90,10 @@ def register():
         if not User.query.filter_by(login_id=l_id).first():
             is_first = (User.query.count() == 0)
             u = User(login_id=l_id, name=name, password=pwd, is_admin=is_first)
-            db.session.add(u); db.session.commit()
-            db.session.add(Account(user_id=u.id)); db.session.commit()
+            db.session.add(u)
+            db.session.commit()
+            db.session.add(Account(user_id=u.id))
+            db.session.commit()
             return redirect(url_for('login'))
     return render_template('register.html')
 
@@ -109,7 +113,6 @@ def payments():
                 acc.balance -= p.price
                 if s_acc: 
                     s_acc.balance += p.price
-                    # Личное уведомление продавцу
                     db.session.add(Notification(
                         message=f"Товар '{p.title}' продан! +{p.price} ГМР от {u.name}",
                         user_id=p.seller_id
@@ -130,7 +133,6 @@ def transfers():
         if target_acc and acc.balance >= amount and amount > 0:
             acc.balance -= amount
             target_acc.balance += amount
-            # Личное уведомление только получателю
             db.session.add(Notification(
                 message=f"Перевод: {u.name} прислал вам {amount} ГМР",
                 user_id=target_id
@@ -147,7 +149,6 @@ def admin():
     if request.method == 'POST':
         act = request.form.get('action')
         if act == 'post_news':
-            # Глобальная новость (user_id остается None)
             db.session.add(Notification(message=request.form.get('news_text'), user_id=None))
         elif act == 'add_money':
             t_acc = Account.query.filter_by(user_id=request.form.get('user_id')).first()
